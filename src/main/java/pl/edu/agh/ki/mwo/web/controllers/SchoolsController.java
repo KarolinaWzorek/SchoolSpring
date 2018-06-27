@@ -63,5 +63,41 @@ public class SchoolsController {
     	return "schoolsList";
     }
 
+///////////edycja szkoły 
+    
+    
+    
+    @RequestMapping(value="/EditSchool")
+    public String displayEditSchoolEditForm(Model model, HttpSession session) {    	
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+        return "schoolEditForm";    
+    }
 
+    @RequestMapping(value="/CreateEditSchool", method=RequestMethod.POST)
+    public String editSchool(@RequestParam(value="schoolName", required=false) String name,
+    		@RequestParam(value="schoolAddress", required=false) String address,
+    		Model model, HttpSession session) {    	
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+    	School school = new School();
+    	school.setName(name);
+    	school.setAddress(address);
+    	
+    	DatabaseConnector.getInstance().addSchool(school);    	
+       	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
+    	model.addAttribute("message", "Nowa szkoła została dodana");
+         	
+    	return "schoolsList";
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }
