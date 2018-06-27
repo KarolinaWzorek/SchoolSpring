@@ -93,13 +93,6 @@ public class DatabaseConnector {
 		transaction.commit();
 	}
 	
-	
-	public void editSchool(School school) {
-		Transaction transaction = session.beginTransaction();
-		session.merge(school);
-		transaction.commit();
-	}
-	
 	public Iterable<Student> getStudents() {
 		String hql = "FROM Student";
 		Query query = session.createQuery(hql);
