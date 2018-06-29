@@ -66,38 +66,28 @@ public class SchoolsController {
 ///////////edycja szkoły 
     
     
-    
-    @RequestMapping(value="/EditSchool")
-    public String displayEditSchoolEditForm(Model model, HttpSession session) {    	
+    @RequestMapping(value="/ModifySchool")
+    public String displayModifySchoolForm(@RequestParam(value="schoolId", required = true) String schoolId,
+    		Model model, HttpSession session) {
     	if (session.getAttribute("userLogin") == null)
     		return "redirect:/Login";
     	
-        return "schoolEditForm";    
+    	model.addAttribute("school", DatabaseConnector.getInstance().getSchool(schoolId));
+    	
+    	return "schoolModifyForm";
     }
-
-    @RequestMapping(value="/CreateEditSchool", method=RequestMethod.POST)
-    public String editSchool(@RequestParam(value="schoolName", required=false) String name,
-    		@RequestParam(value="schoolAddress", required=false) String address,
-    		Model model, HttpSession session) {    	
-    	if (session.getAttribute("userLogin") == null)
-    		return "redirect:/Login";
+    
+    @RequestMapping(value="/UpdateSchool", method = RequestMethod.POST)
+    public String updateSchoolData(@RequestParam(value="schoolId", required = false) String schoolId,
+    		@RequestParam(value="schoolName", required = false) String schoolName,
+    		@RequestParam(value="schoolAddress", required = false) String schoolAddress,
+    		Model model, HttpSession session) {
     	
-    	School school = new School();
-    	school.setName(name);
-    	school.setAddress(address);
+    	DatabaseConnector.getInstance().updateSchoolData(schoolId, schoolName, schoolAddress);
+    	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
+    	model.addAttribute("message", "Dane szkoły zostały zaktualizowane."); 	 	
     	
-    	DatabaseConnector.getInstance().addSchool(school);    	
-       	model.addAttribute("schools", DatabaseConnector.getInstance().getSchools());
-    	model.addAttribute("message", "Nowa szkoła została dodana");
-         	
     	return "schoolsList";
     }
-    
-    
-    
-    
-    
-    
-    
-    
+	
 }

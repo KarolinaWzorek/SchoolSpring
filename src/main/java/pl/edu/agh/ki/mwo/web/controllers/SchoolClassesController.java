@@ -68,6 +68,33 @@ public class SchoolClassesController {
          	
     	return "schoolClassesList";
     }
-
-
+    
+    ///// mdyfikacja 
+    
+    
+    @RequestMapping(value="/ModifySchoolClass")
+    public String displayModifySchoolClassForm(@RequestParam(value="schoolClassId", required = true) String schoolClassId,
+    		Model model, HttpSession session) {
+    	if (session.getAttribute("userLogin") == null)
+    		return "redirect:/Login";
+    	
+    	model.addAttribute("schoolClass", DatabaseConnector.getInstance().getSchoolClass(schoolClassId));
+    	
+    	return "schoolClassModifyForm";
+    }
+    
+    @RequestMapping(value="/UpdateSchoolClass", method = RequestMethod.POST)
+    public String updateSchoolClassData(@RequestParam(value="schoolClassId", required = false) String schoolClassId,
+    		@RequestParam(value="schoolClassStartYear", required = false) int schoolClassStartYear,
+    		@RequestParam(value="schoolClassProfile", required = false) String schoolClassProfile,
+    		@RequestParam(value="schoolClassCurrentYear", required = false) int schoolClassCurrentYear,
+    		Model model, HttpSession session) {
+    	
+    	DatabaseConnector.getInstance().updateSchoolClassData(schoolClassId,  schoolClassStartYear,  schoolClassProfile, schoolClassCurrentYear);
+    	model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
+    	model.addAttribute("message", "Dane klasy zostały zaktualizowane."); 	 	
+    	
+    	return "schoolClassesList";
+    }
+   
 }

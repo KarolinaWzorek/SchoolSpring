@@ -56,6 +56,10 @@ public class SchoolClass implements java.io.Serializable {
 		this.startYear = startYear;
 	}
 
+	public void removeStudent(Student newStudent) {
+		students.remove(newStudent);
+	}
+
 	public int getCurrentYear() {
 		return currentYear;
 	}
