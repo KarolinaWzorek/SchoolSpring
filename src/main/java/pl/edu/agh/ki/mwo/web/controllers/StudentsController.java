@@ -70,15 +70,12 @@ public class StudentsController {
 		return "studentsList";
 	}
 
-	
-	
-	
 	@RequestMapping(value = "/ModifyStudent")
 	public String modifyStudent(@RequestParam(value = "studentId", required = true) String studentId, Model model,
 			HttpSession session) {
 		if (session.getAttribute("userLogin") == null)
 			return "redirect:/Login";
-		
+
 		model.addAttribute("student", DatabaseConnector.getInstance().getStudent(studentId));
 		model.addAttribute("schoolClasses", DatabaseConnector.getInstance().getSchoolClasses());
 
@@ -100,6 +97,5 @@ public class StudentsController {
 
 		return "studentsList";
 	}
-	
-	
+
 }

@@ -101,21 +101,6 @@ public class DatabaseConnector {
 		transaction.commit();
 	}
 
-	public void updateSchoolClassData(String schoolClassId, int schoolClassStartYear, String schoolClassProfile,
-			int schoolClassCurrentYear) {
-		String hql = "From SchoolClass S WHERE S.id=" + schoolClassId;
-		Query query = session.createQuery(hql);
-
-		SchoolClass schoolClass = (SchoolClass) query.uniqueResult();
-		schoolClass.setStartYear(schoolClassStartYear);
-		schoolClass.setProfile(schoolClassProfile);
-		schoolClass.setCurrentYear(schoolClassCurrentYear);
-
-		Transaction transaction = session.beginTransaction();
-		session.update(schoolClass);
-		transaction.commit();
-	}
-
 	public void addSchoolClass(SchoolClass schoolClass, String schoolId) {
 
 		String hql = "FROM School S WHERE S.id=" + schoolId;
@@ -173,30 +158,7 @@ public class DatabaseConnector {
 		transaction.commit();
 	}
 
-	/*
-	 * public void updateStudent(String studentId, String name, String surname,
-	 * String pesel, String classId) {
-	 * 
-	 * String hql = "FROM Student S WHERE S.id=" + studentId; Query query =
-	 * session.createQuery(hql); Student student = (Student) query.uniqueResult();
-	 * student.setName(name); student.setSurname(surname); student.setPesel(pesel);
-	 * Transaction transaction = session.beginTransaction();
-	 * 
-	 * String hql2 = "FROM SchoolClass S WHERE S.id=" + classId; Query query2 =
-	 * session.createQuery(hql2); List<SchoolClass> results = query2.list();
-	 * 
-	 * String hql3 = "FROM SchoolClass"; Query query3 = session.createQuery(hql3);
-	 * List<SchoolClass> allSchoolClasses = query3.list();
-	 * 
-	 * 
-	 * for (SchoolClass classAll : allSchoolClasses) {
-	 * classAll.removeStudent(student); session.save(classAll); }
-	 * 
-	 * if (results.size() == 0) { session.update(student); } else { SchoolClass
-	 * schoolClass = results.get(0); schoolClass.addStudent(student);
-	 * session.save(schoolClass); } transaction.commit(); }
-	 * 
-	 */
+
 	public void updateStudent(String studentId, String name, String surname, String pesel, String classId) {
 
 		String hql = "FROM Student S WHERE S.id=" + studentId;
@@ -211,7 +173,21 @@ public class DatabaseConnector {
 		transaction.commit();
 	}
 
-	
+	public void updateSchoolClassData(String schoolClassId, int startYear, String profile,
+			int currentYear) {
+		String hql = "From SchoolClass S WHERE S.id=" + schoolClassId;
+		Query query = session.createQuery(hql);
+
+		SchoolClass schoolClass = (SchoolClass) query.uniqueResult();
+		schoolClass.setStartYear(startYear);
+		schoolClass.setProfile(profile);
+		schoolClass.setCurrentYear(currentYear);
+		Transaction transaction = session.beginTransaction();
+		
+		session.update(schoolClass);
+		transaction.commit();
+	}
+
 	public void deleteStudent(String studentId) {
 		String hql = "FROM Student S WHERE S.id=" + studentId;
 		Query query = session.createQuery(hql);
